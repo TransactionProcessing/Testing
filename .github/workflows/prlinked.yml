@@ -10,6 +10,6 @@ jobs:
     with:
       pr_number: ${{ github.event.pull_request.number }}
       project_column_name: "In Review"
-      project_name_prefix: "April 2025 Sprint"
+      project_name_prefix: "Done"
     secrets:
       gh_token: ${{ secrets.GH_TOKEN }}
