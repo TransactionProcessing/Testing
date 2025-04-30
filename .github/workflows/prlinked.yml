@@ -6,7 +6,7 @@ on:
 
 jobs:
   move-issues:
-    uses: your-org/your-shared-repo/.github/workflows/move-linked-issues.yml@main
+    uses: TransactionProcessing/org-ci-workflows/.github/workflows/move-linked-issues.yml@main
     with:
       pr_number: ${{ github.event.pull_request.number }}
       project_column_name: "In Review"
