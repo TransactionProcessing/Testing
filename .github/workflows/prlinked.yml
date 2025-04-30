@@ -1,13 +1,15 @@
-name: Move Issue When PR Linked
+name: Move PR Issues to Project Column
 
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
 
 jobs:
-  move_issue:
-    uses: TransactionProcessing/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
+  move-issues:
+    uses: your-org/your-shared-repo/.github/workflows/move-linked-issues.yml@main
     with:
-      org: TransactionProcessing
+      pr_number: ${{ github.event.pull_request.number }}
+      project_column_name: "In Review"
+      project_name_prefix: "April 2025 Sprint"
     secrets:
-      gh_token: ${{ secrets.PROJECTS_TOKEN }}
+      gh_token: ${{ secrets.GH_TOKEN }}
