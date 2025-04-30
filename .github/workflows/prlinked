@@ -1,0 +1,13 @@
+name: Move Issue When PR Linked
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  move_issue:
+    uses: your-org/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
+    with:
+      org: TransactionProcessing
+    secrets:
+      gh_token: ${{ secrets.PROJECTS_TOKEN }}
