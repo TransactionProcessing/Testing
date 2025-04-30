@@ -6,7 +6,7 @@ on:
 
 jobs:
   move_issue:
-    uses: your-org/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
+    uses: TransactionProcessing/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
     with:
       org: TransactionProcessing
     secrets:
