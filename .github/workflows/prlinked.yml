@@ -5,29 +5,25 @@ on:
     types: [opened, edited, reopened, synchronize]
 
 jobs:
-  move-issues:
+  get-date:
     runs-on: ubuntu-latest
-        
+    outputs:
+      project_name_prefix: ${{ steps.format_date.outputs.formatted_date }}
     steps:
       - name: Get PR creation date
-        id: pr_date
+        id: format_date
         run: |
-          # Get the PR creation timestamp from the PR event
-          PR_CREATED_AT="${{ github.event.pull_request.created_at }}"
-          
-          # Format it to get Month and Year
-          MONTH_YEAR=$(date -d "$PR_CREATED_AT" +"%B %Y")
-          echo "Month and Year: $MONTH_YEAR"
-          
-          # Set the project name prefix (e.g., "April 2025 Sprint Test")
-          echo "project_name_prefix=$MONTH_YEAR Sprint Test" >> $GITHUB_ENV
-      
-      
-      - name: Call Move Linked Issues to Project Column
-        uses: TransactionProcessing/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
-        with:
-          pr_number: ${{ github.event.pull_request.number }}
-          project_column_name: "Done"
-          project_name_prefix: ${{ env.project_name_prefix }}
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # Extract the month and year from the PR creation date
+          PR_DATE="${{ github.event.pull_request.created_at }}"
+          FORMATTED_DATE=$(date -d "$PR_DATE" "+%B %Y")  # Format to Month Year
+          echo "formatted_date=${FORMATTED_DATE} Sprint Test" >> $GITHUB_ENV
+
+  move-issues:
+    needs: get-date
+    uses: TransactionProcessing/org-ci-workflows/.github/workflows/move-linked-issue.yml@main
+    with:
+      pr_number: ${{ github.event.pull_request.number }}
+      project_column_name: "Done"
+      project_name_prefix: ${{ needs.get-date.outputs.project_name_prefix }}
+    secrets:
+      gh_token: ${{ secrets.GH_TOKEN }}
